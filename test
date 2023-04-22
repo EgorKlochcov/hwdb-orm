@@ -1,0 +1,24 @@
+
+pushcin = Publisher(name='Пушкин')
+book1 = Book(id=1, title= "Капитанская дочка", id_publisher= 1)
+book2 = Book(id=2,title= "Руслан и Людмила", id_publisher= 1)
+book3 = Book(id=3, title= "Евгений Онегин", id_publisher= 1)
+
+bukvoed = Shop(id=1, name="Буквоед")
+labyrinth = Shop(id=2, name="Лабиринт")
+book_house = Shop(id=3, name="Книжный дом")
+
+a = Stock(id_book=1 ,id_shop=1 , count=10 )
+b = Stock(id_book=2 ,id_shop= 1, count= 15)
+c = Stock(id_book= 1,id_shop= 2, count= 10)
+d = Stock(id_book=3 ,id_shop=3 , count=10)
+f = Stock(id_book=1 ,id_shop=1 , count=10)
+
+s1 = Sale(price=600 , date_sale= '09-11-2022',count= 1, id_stock=1 )
+s2 = Sale(price= 500, date_sale='08-11-2022' ,count= 1, id_stock=2)
+s3 = Sale(price= 580, date_sale='05-11-2022' ,count= 2, id_stock=3 )
+s4 = Sale(price= 490, date_sale='02-11-2022' ,count=2 , id_stock=4 )
+s5 = Sale(price= 600, date_sale='26-10-2022' ,count= 2, id_stock= 5 )
+
+session.add_all([pushcin, book1, book2, book3, bukvoed, labyrinth, book_house, a, b, c, d, f, s1, s2, s3, s4, s5])
+session.commit()
