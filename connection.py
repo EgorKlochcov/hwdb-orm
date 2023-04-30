@@ -1,9 +1,9 @@
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker
 
-login = 'postgres'
-password = 'StalKer333'
-name_DB = 'home_work5'
+login = ''
+password = ''
+name_DB = ''
 DSN = f'postgresql://{login}:{password}@localhost:5432/{name_DB}'
 engine = sqlalchemy.create_engine(DSN)
 
