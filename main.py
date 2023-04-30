@@ -1,22 +1,28 @@
-import sqlalchemy
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import or_, cast, String
+from connection import session, engine
 from models import *
-login = ''
-password = ''
-name_DB = ''
-DSN = f'postgresql://{login}:{password}@localhost:5432/{name_DB}'
-engine = sqlalchemy.create_engine(DSN)
-
-create_tables(engine)
-
-Session = sessionmaker(bind=engine)
-session = Session()
+from INSERT import insert_data
 
 
-param = input("Введите имя издателя: ")
 
-for c in session.query(Book, Shop, Stock, Publisher, Sale).filter(Publisher.id == Book.id_publisher).filter(Book.id == Stock.id_book).filter(Shop.id == Stock.id_shop).filter(Sale.id_stock == Stock.id).filter(Publisher.name == param):
-    print(f'{c.Book.title} | {c.Shop.name} | {c.Sale.price} | {c.Sale.date_sale}')
+def get_shops(publisher_params):
+    items = session.query(
+        Book.title, Shop.name, Sale.price, Sale.date_sale
+    ).select_from(Shop)\
+        .join(Stock)\
+        .join(Book)\
+        .join(Publisher)\
+        .join(Sale)\
+        .filter(or_(cast(Publisher.id, String) == publisher_params, Publisher.name == publisher_params)).all()
+    for title, shop, price, date in items:
+        print(f"{title: <40} | {shop: <12} | {price: <8} | {date.strftime('%d-%m-%Y')}")
+
+
+if __name__ == '__main__':
+    create_tables(engine)
+    insert_data(session)
+    param = input("Введите имя издателя или его id: ")
+    get_shops(param)
 
 session.close()
 
